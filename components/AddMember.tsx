@@ -1,7 +1,7 @@
 "use client";
 
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { OrganizationMembershipResource } from "@clerk/types";
@@ -44,16 +44,27 @@ function AddMember() {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState<MembersWithDetails[]>([]);
 
-  useEffect(() => {
+  // Memoized function to fetch users
+  const fetchUsers = useCallback(async () => {
     if (organization) {
-      fetchUsers();
-    }
-  }, [organization]);
+      try {
+        const response = await organization.getMemberships();
 
-  const fetchData = async () => {
+        const usersWithoutCurrentUser = response.data.filter(
+          (member) => member.publicUserData.userId !== user?.id
+        );
+
+        setFilteredUsers(usersWithoutCurrentUser);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    }
+  }, [organization, user]);
+
+  // Memoized function to fetch data
+  const fetchData = useCallback(async () => {
     if (id) {
       const projectMembers = await fetchMembers(id as string);
-      console.log("projectMembers", projectMembers);
 
       if (projectMembers && projectMembers.length > 0) {
         const userPromises = projectMembers.map((member) =>
@@ -61,7 +72,6 @@ function AddMember() {
         );
 
         const users = await Promise.all(userPromises);
-        console.log("Users", users);
 
         const addedByUserIds = Array.from(
           new Set(projectMembers.map((member) => member.added_by))
@@ -85,34 +95,20 @@ function AddMember() {
 
         setMembers(membersWithDetails);
       } else {
-        console.log("No project members found.");
+        console.error("No project members found.");
         setMembers([]);
       }
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchUsers(); // Fetch users when organization is available
+  }, [organization, fetchUsers]);
 
-  console.log(members);
-
-  const fetchUsers = async () => {
-    try {
-      if (organization) {
-        const response = await organization.getMemberships();
-
-        const usersWithoutCurrentUser = response.data.filter(
-          (member) => member.publicUserData.userId !== user?.id
-        );
-
-        setFilteredUsers(usersWithoutCurrentUser);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
+  useEffect(() => {
+    fetchData(); // Fetch data when component mounts
+  }, [fetchData]);
 
   // Handle adding a member to the project
   const addMemberToProject = async (userId: string) => {
@@ -217,6 +213,7 @@ function AddMember() {
   return (
     <>
       <div>
+        {/* Header Section */}
         <div className='flex items-center mb-4'>
           <h1 className='text-lg font-semibold mr-2'>Add Member</h1>
 
@@ -225,9 +222,9 @@ function AddMember() {
             <DialogTrigger asChild>
               <Button
                 variant='default'
-                className='flex items-center px-1 py-1 rounded-lg h-7'
+                className='flex items-center px-1 py-1 rounded-lg h-6'
               >
-                <Plus />
+                <Plus className='w-4 h-4' /> {/* Smaller Plus Icon */}
               </Button>
             </DialogTrigger>
 
@@ -235,7 +232,7 @@ function AddMember() {
             <DialogContent>
               <div className='flex justify-between items-center'>
                 <DialogTitle>Add Member to Project</DialogTitle>
-                {/* Close Button using DialogClose */}
+                {/* Close Button */}
                 <DialogClose className='ml-4'></DialogClose>
               </div>
 
@@ -248,7 +245,7 @@ function AddMember() {
                   className='w-full border border-gray-300 p-2 rounded-lg'
                 />
 
-                {/* Display filtered users */}
+                {/* Display Filtered Users */}
                 <div className='mt-4'>
                   {filteredUsers.length > 0 ? (
                     <ul>
@@ -300,36 +297,38 @@ function AddMember() {
           </Dialog>
         </div>
       </div>
-      <div className='p-4'>
-        <h1 className='text-xl font-bold mb-4'>Members List</h1>
-        <table className='w-1/3 border-collapse border border-gray-300'>
+
+      {/* Members List Section */}
+      <div>
+        <h1 className='text-lg font-semibold mr-2'>Members List</h1>
+        <table className='w-full '>
           <thead>
             <tr className='border-b border-gray-300'>
               <th className='p-2 text-left'></th>
-              <th className='p-2 text-left'>Member</th>
-              <th className='p-2 text-left'>Added by</th>
-              <th className='p-2 text-left'>Time</th>
+              <th className='p-1 text-left'>Member</th>
+              <th className='p-1 text-left'>Added by</th>
+              <th className='p-1 text-left'>Time</th>
             </tr>
           </thead>
           <tbody>
             {members.map((member, index) => (
               <tr key={index} className='border-b border-gray-300'>
-                <td className='flex items-center p-2'>
+                <td className='flex items-center pt-2 pb-2 pr-1'>
                   {member.image ? (
                     <Image
                       src={member.image}
                       alt={member.username}
-                      width={32}
-                      height={32}
+                      width={20}
+                      height={20}
                       className='w-8 h-8 rounded-full mr-2'
                     />
                   ) : (
                     <div className='w-8 h-8 rounded-full bg-gray-300 mr-2' />
                   )}
                 </td>
-                <td className='p-2'>{member.username}</td>
-                <td className='p-2'>{member.added_by_username}</td>
-                <td className='p-2'>
+                <td className='p-1'>{member.username}</td>
+                <td className='p-1'>{member.added_by_username}</td>
+                <td className='p-1'>
                   {new Date(member.added_at).toLocaleString()}
                 </td>
               </tr>

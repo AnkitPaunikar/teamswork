@@ -43,7 +43,7 @@ export default function Example() {
   useEffect(() => {
     const loadProjects = async () => {
       if (!user?.id) {
-        console.warn("User ID is not available. Skipping project fetch.");
+        console.error("User ID is not available. Skipping project fetch.");
         return;
       }
 
@@ -94,11 +94,8 @@ export default function Example() {
     <div className='flex flex-col items-start ml-10 mt-10'>
       <div className='text-xl mb-4'>Hello, {user?.fullName || "Edamone"}</div>
 
-      {/* Button to open dialog */}
       <h2 className='text-2xl mb-4'>Create a Project</h2>
       <div className='flex items-start space-x-6'>
-        {" "}
-        {/* Flex container for button and project cards */}
         <Button
           onClick={() => setOpenDialog(true)}
           variant='outline'
@@ -108,8 +105,6 @@ export default function Example() {
         </Button>
         {/* Project Cards Display */}
         <div className='flex space-x-4'>
-          {" "}
-          {/* Flex container for horizontal alignment */}
           {projects.map((project) => (
             <Link key={project.id} href={`/projects/${project.id}`} passHref>
               <div className='bg-white shadow-md h-48 w-48 flex flex-col justify-between rounded cursor-pointer transition-transform transform hover:scale-105'>
@@ -122,12 +117,8 @@ export default function Example() {
                   </p>
                 </div>
 
-                {/* Footer for member avatars */}
                 <div className='flex justify-start items-center p-2 border-t'>
-                  {/* Placeholder for member avatars */}
-                  <div className='flex -space-x-2 overflow-hidden'>
-                    {/* Add more avatars as needed */}
-                  </div>
+                  <div className='flex -space-x-2 overflow-hidden'></div>
                 </div>
               </div>
             </Link>
