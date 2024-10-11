@@ -2,7 +2,6 @@
 
 import { useOthers, useMyPresence } from "@/liveblocks.config";
 import React, { useEffect, useState } from "react";
-//import { useParams } from "next/navigation";
 
 interface StickyNoteType {
   id: number;
