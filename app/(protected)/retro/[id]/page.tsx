@@ -1,7 +1,6 @@
 "use client";
 
-import { useOthers, useMyPresence } from "@/liveblocks.config";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface StickyNoteType {
   id: number;
@@ -15,17 +14,17 @@ interface ColumnType {
   notes: StickyNoteType[];
 }
 
-interface CursorPresence {
-  cursor?: {
-    x: number;
-    y: number;
-  };
-}
+// interface CursorPresence {
+//   cursor?: {
+//     x: number;
+//     y: number;
+//   };
+// }
 
-interface OtherUser {
-  connectionId: string;
-  presence: CursorPresence;
-}
+// interface OtherUser {
+//   connectionId: string;
+//   presence: CursorPresence;
+// }
 
 const RetroPage: React.FC = () => {
   const initialColumns = [
@@ -133,26 +132,26 @@ const RetroPage: React.FC = () => {
     );
   };
 
-  const [, updateMyPresence] = useMyPresence(); // Only need the update function
+  //const [, updateMyPresence] = useMyPresence(); // Only need the update function
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      updateMyPresence({
-        cursor: { x: e.clientX, y: e.clientY },
-      });
-    };
+  // useEffect(() => {
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     updateMyPresence({
+  //       cursor: { x: e.clientX, y: e.clientY },
+  //     });
+  //   };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [updateMyPresence]);
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //   };
+  // }, [updateMyPresence]);
 
-  const othersData = useOthers();
-  const others: OtherUser[] = othersData.map((other) => ({
-    connectionId: String(other.connectionId),
-    presence: other.presence,
-  }));
+  // const othersData = useOthers();
+  // const others: OtherUser[] = othersData.map((other) => ({
+  //   connectionId: String(other.connectionId),
+  //   presence: other.presence,
+  // }));
 
   return (
     <div className='flex h-screen m-4'>
@@ -256,21 +255,6 @@ const RetroPage: React.FC = () => {
           </div>
         ))}
       </div>
-      {others.map((other) => (
-        <div
-          key={other.connectionId}
-          className='absolute flex items-center'
-          style={{
-            left: other.presence?.cursor?.x || 0,
-            top: other.presence?.cursor?.y || 0,
-          }}
-        >
-          <div className='h-5 w-5 bg-blue-400 rounded-full' />
-          {/* <span className='ml-1 text-sm'>
-            {usernames[other.connectionId] || "Anonymous"}
-          </span> */}
-        </div>
-      ))}
     </div>
   );
 };
