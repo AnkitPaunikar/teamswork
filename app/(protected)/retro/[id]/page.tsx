@@ -1,8 +1,8 @@
 "use client";
 
-import { RoomProvider, useOthers, useMyPresence } from "@/liveblocks.config";
+import { useOthers, useMyPresence } from "@/liveblocks.config";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+//import { useParams } from "next/navigation";
 
 interface StickyNoteType {
   id: number;
@@ -277,7 +277,7 @@ const RetroPage: React.FC = () => {
 };
 
 const RetroPageWrapper: React.FC = () => {
-  const { id } = useParams(); // Assuming you are using `useParams` from `next/navigation`
+  // const { id } = useParams(); // Assuming you are using `useParams` from `next/navigation`
 
   return (
     //<RoomProvider id={`project-room-${id}`}>
