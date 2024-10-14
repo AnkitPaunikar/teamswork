@@ -40,6 +40,9 @@ The Teams Work application is being developed to address the challenges faced by
       <img width="707" alt="{D24499C8-7FA3-4F43-86FC-A7F7A63DB338}" src="https://github.com/user-attachments/assets/9203972d-b081-4b39-a903-f4534d1c1e1b">
       <img width="1265" alt="{023703E5-9B25-4423-B0D7-81DF43631B4D}" src="https://github.com/user-attachments/assets/3bdebbb4-f582-4ef4-ba90-97d4dbc4e876">
 
+Deployed application (Live features are turned off)
+`https://teamswork.vercel.app/`
+
 
       
 
