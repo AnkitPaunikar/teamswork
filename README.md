@@ -24,8 +24,8 @@ The Teams Work application is being developed to address the challenges faced by
 
    <img width="1249" alt="{9B35C591-A72E-420A-A113-7D219501A4E0}" src="https://github.com/user-attachments/assets/0b20a6d7-723d-4f5e-940a-237a79c995c8">
 
-3. When clicked on the View Retro icon on screens bar it will redirect to a similar kind of UI as Dashboard where the same role based fetures are available
-   <img width="87" alt="{4486D78F-BD6A-4E6C-8C81-0F684C944815}" src="https://github.com/user-attachments/assets/3dd67fd8-bd09-43a6-9068-adc428e2f38d">\
+3. When clicked on the View Retro icon on screens bar it will redirect to a similar kind of UI as Dashboard where the same role based features are implemented here
+   <img width="87" alt="{4486D78F-BD6A-4E6C-8C81-0F684C944815}" src="https://github.com/user-attachments/assets/3dd67fd8-bd09-43a6-9068-adc428e2f38d">
 
 4. Retrospective board -- The vision for this is to make a interactive board for every members and to be able to raise flags as a collective team.
    1. USER:
